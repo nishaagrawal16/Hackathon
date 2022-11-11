@@ -1,18 +1,18 @@
-import pitch
-from pydub import AudioSegment
-import os
-import wave
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-import pickle
-
 ##############################################################
 #
 #  This is for creating the trained Data from the sample files.
 #
 ##############################################################
+import os
+import pickle
+import pitch
+from pydub import AudioSegment
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+import wave
+
 def trained_data():
-    pitch = [] # Data creation
+    pitch_list = [] # Data creation
     gender = [] # Stores the gender
     age = [] # Stores the age
     for (root, dirs, files) in os.walk('../gender_age/manual_data/'):
@@ -32,20 +32,20 @@ def trained_data():
             else:
                 gender.append([1])
                 
-            pitch.append([pit])
+            pitch_list.append([pit])
 
             age.append([splitted_file_name[1]])
 
     classifier = LogisticRegression(random_state = 0)
-    classifier.fit(pitch, gender)
+    classifier.fit(pitch_list, gender)
 
     depX = []
     for i in range(0, len(gender)):
-        depX.append([pitch[i][0], gender[i][0]])
+        depX.append([pitch_list[i][0], gender[i][0]])
     decision_tree = DecisionTreeClassifier(criterion = 'entropy' , random_state = 0, max_depth = 2, min_samples_split = 3)
     decision_tree.fit(depX, age)
     
-    # Saves the model to disk.
+    # Saves the model on disk.
     classifier_filename = 'classifier_model.sav'
     decision_tree_filename = 'decision_tree_model.sav'
 
