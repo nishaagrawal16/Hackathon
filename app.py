@@ -26,7 +26,7 @@ def file_name():
     classifier = pickle.load(open(classifier_filename, 'rb'))
     decision_tree = pickle.load(open(decision_tree_filename, 'rb'))
 
-    gender = classifier.predict([[pitch.find_pitch(test_audio)]][0]
+    gender = classifier.predict([[pitch.find_pitch(test_audio)]][0])
     if gender:
         gen = 'Hey, gorgeous lady!'
     else:
